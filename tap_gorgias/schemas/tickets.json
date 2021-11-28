@@ -1,0 +1,444 @@
+{
+    "type": [
+        "null",
+        "object"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "id": {
+            "type": [
+                "null",
+                "integer"
+            ]
+        },
+        "uri": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "external_id": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "language": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "status": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "priority": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "channel": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "via": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "from_agent": {
+            "type": [
+                "null",
+                "boolean"
+            ]
+        },
+        "requester": {
+            "type": [
+                "null",
+                "object"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": [
+                        "null",
+                        "integer"
+                    ]
+                },
+                "email": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "name": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "firstname": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "lastname": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "meta": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                }
+            }
+        },
+        "customer": {
+            "type": [
+                "null",
+                "object"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": [
+                        "null",
+                        "integer"
+                    ]
+                },
+                "email": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "name": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "firstname": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "lastname": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "meta": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                }
+            }
+        },
+        "assignee_user": {
+            "type": [
+                "null",
+                "object"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": [
+                        "null",
+                        "integer"
+                    ]
+                },
+                "email": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "name": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "firstname": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "lastname": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "meta": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                }
+            }
+        },
+        "assignee_team": {
+            "type": [
+                "null",
+                "object"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": [
+                        "null",
+                        "integer"
+                    ]
+                },
+                "name": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "decoration": {
+                    "type": [
+                        "null",
+                        "object"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "emoji": {
+                            "type": [
+                                "null",
+                                "object"
+                            ],
+                            "additionalProperties": false,
+                            "properties": {
+                                "id": {
+                                    "type": [
+                                        "null",
+                                        "string"
+                                    ]
+                                },
+                                "name": {
+                                    "type": [
+                                        "null",
+                                        "string"
+                                    ]
+                                },
+                                "skin": {
+                                    "type": [
+                                        "null",
+                                        "integer"
+                                    ]
+                                },
+                                "colons": {
+                                    "type": [
+                                        "null",
+                                        "string"
+                                    ]
+                                },
+                                "native": {
+                                    "type": [
+                                        "null",
+                                        "string"
+                                    ]
+                                },
+                                "unified": {
+                                    "type": [
+                                        "null",
+                                        "string"
+                                    ]
+                                },
+                                "emoticons": {
+                                    "type": [
+                                        "null",
+                                        "array"
+                                    ],
+                                    "items": {
+                                        "type": [
+                                            "null",
+                                            "string"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "subject": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "excerpt": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "integrations": {
+            "type": [
+                "null",
+                "array"
+            ],
+            "items": {
+                "type": [
+                    "null",
+                    "object"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "address": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "type": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    }
+                }
+            }
+        },
+        "meta": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "tags": {
+            "type": [
+                "null",
+                "array"
+            ],
+            "items": {
+                "type": [
+                    "null",
+                    "object"
+                ],
+                "properties": {
+                    "id": {
+                        "type": [
+                            "null",
+                            "integer"
+                        ]
+                    },
+                    "name": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "uri": {
+                        "type": [
+                            "null",
+                            "string"
+                        ]
+                    },
+                    "decoration": {
+                        "type": [
+                            "null",
+                            "object"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "color": {
+                                "type": [
+                                    "null",
+                                    "string"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "messages_count": {
+            "type": [
+                "null",
+                "integer"
+            ]
+        },
+        "is_unread": {
+            "type": [
+                "null",
+                "boolean"
+            ]
+        },
+        "created_datetime": {
+            "type": [
+                "null",
+                "string"
+            ],
+            "format": "date-time"
+        },
+        "opened_datetime": {
+            "type": [
+                "null",
+                "string"
+            ],
+            "format": "date-time"
+        },
+        "last_received_message_datetime": {
+            "type": [
+                "null",
+                "string"
+            ],
+            "format": "date-time"
+        },
+        "last_message_datetime": {
+            "type": [
+                "null",
+                "string"
+            ],
+            "format": "date-time"
+        },
+        "updated_datetime": {
+            "type": [
+                "null",
+                "string"
+            ],
+            "format": "date-time"
+        },
+        "closed_datetime": {
+            "type": [
+                "null",
+                "string"
+            ],
+            "format": "date-time"
+        },
+        "snooze_datetime": {
+            "type": [
+                "null",
+                "string"
+            ],
+            "format": "date-time"
+        }
+    }
+}

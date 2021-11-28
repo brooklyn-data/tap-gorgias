@@ -1,0 +1,21 @@
+version: 1
+plugins:
+  extractors:
+  - name: tap-gorgias
+    namespace: tap_gorgias
+    executable: ./tap-gorgias.sh
+    capabilities:
+    - state
+    - catalog
+    - discover
+    settings:
+    - name: subdomain
+    - name: username
+    - name: password
+      kind: password
+    - name: start_date
+      kind: date_iso8601
+  loaders:
+  - name: target-jsonl
+    variant: andyh1203
+    pip_url: target-jsonl
