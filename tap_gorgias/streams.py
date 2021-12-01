@@ -79,18 +79,13 @@ class TicketsStream(GorgiasStream):
             "slug": "could-be-anything",
         }
         if sync_start_datetime:
-            payload.update(
-                {
-                    "filters": f"ticket.updated_datetime >= {sync_start_datetime}"
-                    f"|| ticket.last_message_datetime >= {sync_start_datetime}"
-                    f"|| ticket.last_received_message_datetime >= {sync_start_datetime}"
-                }
-            )
+            payload.update({"filters": f"gte(ticket.updated_datetime, '{sync_start_datetime.isoformat()}')"})
+        logging.info(f"Creating ticket view with parameters {payload}")
         resp = requests.post(
             self.url_base + "/api/views", headers=headers, json=payload
         )
         resp.raise_for_status()
-        logging.info(f"Created ticket view with parameters {payload}")
+        logging.info("View successfully created.")
         view_id = resp.json()["id"]
         return view_id
 
@@ -114,6 +109,7 @@ class TicketsStream(GorgiasStream):
             One item per (possibly processed) record in the API.
         """
         sync_start_datetime = self.get_starting_timestamp(context)
+        logging.info(f"Starting timestamp: {sync_start_datetime}")
         view_id = self.create_ticket_view(sync_start_datetime)
         context = context or {}
         context["view_id"] = view_id

@@ -7,7 +7,7 @@ Built with the [Meltano Tap SDK](https://sdk.meltano.com) for Singer Taps.
 ## Resources
 
 This tap extracts:
-- Tickets (incremental based on the ticket's `updated_datetime`, `last_message_datetime`, or `last_received_message_datetime`)
+- Tickets (incremental based on the ticket's `updated_datetime`)
 - Ticket messages (incremental, extracts messages for all tickets retrieved in the ticket parent stream per above conditions)
 - Satisfactions surveys (full sync only due to lack of filtering in the API)
 
@@ -24,7 +24,7 @@ pipx install tap-gorgias
 - `subdomain` (\<subdomain>.gorgias.com)
 - `username` (Login email address)
 - `password` (Login password)
-- `start_date` (Date to start syncing tickets and corresponding messages from based on the ticket's `updated_datetime`, `last_message_datetime`, or `last_received_message_datetime`)
+- `start_date` (Date to start syncing tickets and corresponding messages from based on the ticket's `updated_datetime`)
 
 A full list of supported settings and capabilities for this
 tap is available by running:
