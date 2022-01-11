@@ -9,10 +9,12 @@ from singer_sdk.streams import RESTStream
 from singer_sdk.authenticators import BasicAuthenticator
 from singer_sdk.exceptions import FatalAPIError, RetriableAPIError
 
+
 class GorgiasStream(RESTStream):
     """Gorgias stream class."""
 
     http_headers = {"Accept": "application/json", "Content-Type": "application/json"}
+    _LOG_REQUEST_METRIC_URLS = True
 
     @property
     def url_base(self) -> str:
@@ -30,8 +32,8 @@ class GorgiasStream(RESTStream):
         """Return a new authenticator object."""
         return BasicAuthenticator.create_for_stream(
             self,
-            username=self.config.get("username"),
-            password=self.config.get("password"),
+            username=self.config.get("email_address"),
+            password=self.config.get("api_key"),
         )
 
     def validate_response(self, response: requests.Response) -> None:

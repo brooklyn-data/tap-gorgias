@@ -1,4 +1,5 @@
 version: 1
+project_id: f47dfa9d-d482-4818-a334-fba56356a110
 plugins:
   extractors:
   - name: tap-gorgias
@@ -10,13 +11,11 @@ plugins:
     - discover
     settings:
     - name: subdomain
-    - name: username
-    - name: password
+    - name: email_address
+    - name: api_key
       kind: password
     - name: start_date
       kind: date_iso8601
-    config:
-      start_date: '2021-11-20T10:17:09Z'
   loaders:
   - name: target-jsonl
     variant: andyh1203
