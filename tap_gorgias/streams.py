@@ -47,9 +47,15 @@ class TicketsStream(GorgiasStream):
         # The next page token is actually a url path returned
         # by the API, so append it to the url base
         if not next_page_token:
-            url = self.get_url(context)
+            url = (
+                self.get_url(context) + f"?limit={self.config['ticket_view_page_size']}"
+            )
         else:
-            url = self.url_base + next_page_token
+            url = (
+                self.url_base
+                + next_page_token
+                + f"&limit={self.config['ticket_view_page_size']}"
+            )
         request_data = self.prepare_request_payload(context, next_page_token)
 
         headers = self.get_headers()
@@ -68,18 +74,30 @@ class TicketsStream(GorgiasStream):
         )
         return request
 
+    def get_current_user_id(self) -> int:
+        headers = self.get_headers()
+        resp = requests.get(self.url_base + "/api/users/0", headers=headers)
+        resp.raise_for_status()
+        return resp.json()["id"]
+
     def create_ticket_view(self, sync_start_datetime: datetime) -> int:
         headers = self.get_headers()
+        current_user_id = self.get_current_user_id()
         payload = {
             "category": "user",
             "order_by": "updated_datetime",
             "order_dir": "asc",
-            "visibility": "public",
+            "visibility": "private",
+            "shared_with_users": [current_user_id],
             "type": "ticket-list",
             "slug": "could-be-anything",
         }
         if sync_start_datetime:
-            payload.update({"filters": f"gte(ticket.updated_datetime, '{sync_start_datetime.isoformat()}')"})
+            payload.update(
+                {
+                    "filters": f"gte(ticket.updated_datetime, '{sync_start_datetime.isoformat()}')"
+                }
+            )
         logging.info(f"Creating ticket view with parameters {payload}")
         resp = requests.post(
             self.url_base + "/api/views", headers=headers, json=payload
