@@ -99,20 +99,37 @@ class TicketsStream(GorgiasStream):
                 }
             )
         logging.info(f"Creating ticket view with parameters {payload}")
-        resp = requests.post(
-            self.url_base + "/api/views", headers=headers, json=payload
+        decorated_request = self.request_decorator(self._request)
+        prepared_request = cast(
+            requests.PreparedRequest,
+            self.requests_session.prepare_request(
+                requests.Request(
+                    method="post",
+                    url=self.url_base + "/api/views",
+                    headers=headers,
+                    json=payload,
+                ),
+            ),
         )
-        resp.raise_for_status()
+        resp = decorated_request(prepared_request, None)
         logging.info("View successfully created.")
         view_id = resp.json()["id"]
         return view_id
 
     def delete_ticket_view(self, view_id: int) -> None:
         headers = self.get_headers()
-        resp = requests.delete(
-            self.url_base + f"/api/views/{view_id}/", headers=headers
+        decorated_request = self.request_decorator(self._request)
+        prepared_request = cast(
+            requests.PreparedRequest,
+            self.requests_session.prepare_request(
+                requests.Request(
+                    method="delete",
+                    url=self.url_base + f"/api/views/{view_id}/",
+                    headers=headers,
+                ),
+            ),
         )
-        resp.raise_for_status()
+        resp = decorated_request(prepared_request, None)
         logging.info(f"Deleted ticket view {view_id}")
 
     def get_records(self, context: Optional[dict]) -> Iterable[Dict[str, Any]]:
