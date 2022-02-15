@@ -76,8 +76,18 @@ class TicketsStream(GorgiasStream):
 
     def get_current_user_id(self) -> int:
         headers = self.get_headers()
-        resp = requests.get(self.url_base + "/api/users/0", headers=headers)
-        resp.raise_for_status()
+        decorated_request = self.request_decorator(self._request)
+        prepared_request = cast(
+            requests.PreparedRequest,
+            self.requests_session.prepare_request(
+                requests.Request(
+                    method="get",
+                    url=self.url_base + "/api/users/0",
+                    headers=headers,
+                ),
+            ),
+        )
+        resp = decorated_request(prepared_request, None)
         return resp.json()["id"]
 
     def create_ticket_view(self, sync_start_datetime: datetime) -> int:
