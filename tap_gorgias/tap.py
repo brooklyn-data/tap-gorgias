@@ -16,7 +16,7 @@ STREAM_TYPES = [
     TicketsStream,
     MessagesStream,
     SatisfactionSurveysStream,
-    # CustomersStream
+    CustomersStream
 ]
 
 
