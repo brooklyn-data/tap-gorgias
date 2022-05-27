@@ -9,12 +9,14 @@ from tap_gorgias.streams import (
     TicketsStream,
     MessagesStream,
     SatisfactionSurveysStream,
+    CustomersStream
 )
 
 STREAM_TYPES = [
     TicketsStream,
     MessagesStream,
     SatisfactionSurveysStream,
+    # CustomersStream
 ]
 
 
@@ -48,10 +50,10 @@ class TapGorgias(Tap):
             description="The earliest record date to sync",
         ),
         th.Property(
-            "ticket_view_page_size",
+            "page_size",
             th.IntegerType,
             default=100,
-            description="The page size for each list view items call",
+            description="The page size for each list endpoint call",
         ),
     ).to_dict()
 
