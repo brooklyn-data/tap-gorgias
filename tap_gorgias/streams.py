@@ -633,7 +633,6 @@ class CustomersStream(GorgiasStream):
     schema = th.PropertiesList(
         th.Property("id", th.IntegerType),
         th.Property("created_datetime", th.DateTimeType),
-        th.Property("data", th.ObjectType()),
         th.Property("email", th.StringType),
         th.Property("external_id", th.StringType),
         th.Property("firstname", th.StringType),
