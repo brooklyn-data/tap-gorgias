@@ -9,14 +9,14 @@ from tap_gorgias.streams import (
     TicketsStream,
     MessagesStream,
     SatisfactionSurveysStream,
-    CustomersStream
+    # CustomersStream
 )
 
 STREAM_TYPES = [
     TicketsStream,
     MessagesStream,
     SatisfactionSurveysStream,
-    CustomersStream
+    # CustomersStream
 ]
 
 

@@ -22,7 +22,7 @@ class GorgiasStream(RESTStream):
 
     # Generic jsonpath, a list of resources. E.g: a list of tickets.
     # https://developers.gorgias.com/reference/pagination#response-attributes
-    records_jsonpath = "$[*].data[*]"
+    records_jsonpath = "$.data[*]"
 
     http_headers = {"Accept": "application/json", "Content-Type": "application/json"}
     _LOG_REQUEST_METRIC_URLS = True
