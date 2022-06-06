@@ -16,6 +16,7 @@ class GorgiasStream(RESTStream):
 
     # Most of the endpoints of the API returning a large number of resources are paginated.
     # Cursor-based pagination provides lower latency when listing resources.
+    # Views use a custom path for the cursor value.
     # https://developers.gorgias.com/reference/pagination
     next_page_token_jsonpath = "$.meta.next_cursor"
 

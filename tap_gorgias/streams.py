@@ -1,5 +1,5 @@
 """Stream type classes for tap-gorgias."""
-
+from urllib import parse
 from datetime import datetime
 import logging
 import requests
@@ -19,6 +19,9 @@ class TicketsStream(GorgiasStream):
     primary_keys = ["id"]
     replication_key = "updated_datetime"
     is_sorted = True
+
+    # Link to the next items, if any.
+    next_page_token_jsonpath = "$.meta.next_items"
 
     customer_schema = [
         th.ObjectType(
@@ -217,7 +220,7 @@ class TicketsStream(GorgiasStream):
     ).to_dict()
 
     def prepare_request(
-        self, context: Optional[dict], next_page_token: Optional[Any]
+            self, context: Optional[dict], next_page_token: Optional[Any]
     ) -> requests.PreparedRequest:
         """Prepare a request object.
 
@@ -353,6 +356,21 @@ class TicketsStream(GorgiasStream):
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
         """Return the ticket_id for use by child streams."""
         return {"ticket_id": record["id"]}
+
+    def get_url_params(
+            self, context: Optional[dict], next_page_token: Optional[Any]
+    ) -> Dict[str, Any]:
+        """Return the URL parameters for the request.
+
+        For the Tickets stream, the next cursor is returned in a querystring parameter under the path $.meta.next_items
+        so here we parse the whole url query string in order to extract the cursor.
+
+        """
+        next_page_url_query = parse.parse_qs(next_page_token)
+        if not next_page_url_query:
+            return {"limit": self.config["page_size"]}
+        else:
+            return {"limit": self.config["page_size"], "cursor": next_page_url_query["cursor"][0], "direction": "next"}
 
 
 class MessagesStream(GorgiasStream):
