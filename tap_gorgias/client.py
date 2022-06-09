@@ -1,9 +1,10 @@
 """REST client handling, including GorgiasStream base class."""
 
 import time
-from typing import Dict
+from typing import Dict, Optional, Any
 
 import requests
+from singer_sdk.helpers.jsonpath import extract_jsonpath
 
 from singer_sdk.streams import RESTStream
 from singer_sdk.authenticators import BasicAuthenticator
@@ -12,6 +13,16 @@ from singer_sdk.exceptions import FatalAPIError, RetriableAPIError
 
 class GorgiasStream(RESTStream):
     """Gorgias stream class."""
+
+    # Most of the endpoints of the API returning a large number of resources are paginated.
+    # Cursor-based pagination provides lower latency when listing resources.
+    # Views use a custom path for the cursor value.
+    # https://developers.gorgias.com/reference/pagination
+    next_page_token_jsonpath = "$.meta.next_cursor"
+
+    # Generic jsonpath, a list of resources. E.g: a list of tickets.
+    # https://developers.gorgias.com/reference/pagination#response-attributes
+    records_jsonpath = "$.data[*]"
 
     http_headers = {"Accept": "application/json", "Content-Type": "application/json"}
     _LOG_REQUEST_METRIC_URLS = True
@@ -83,3 +94,40 @@ class GorgiasStream(RESTStream):
                 f"{response.reason} for path: {self.path}"
             )
             raise RetriableAPIError(msg)
+
+    def get_url_params(
+        self, context: Optional[dict], next_page_token: Optional[Any]
+    ) -> Dict[str, Any]:
+        """Return a dictionary of values to be used in URL parameterization.
+
+        If paging is supported, developers may override with specific paging logic.
+
+        Args:
+            context: Stream partition or context dictionary.
+            next_page_token: Token, page number or any request argument to request the
+                next page of data.
+
+        Returns:
+            Dictionary of URL query parameters to use in the request.
+        """
+        return {"cursor": next_page_token, "limit": self.config["page_size"]}
+
+    def get_next_page_token(
+        self, response: requests.Response, previous_token: Optional[Any]
+    ) -> Any:
+        """Return token identifying next page or None if all records have been read.
+
+        Args:
+            response: A raw `requests.Response`_ object.
+            previous_token: Previous pagination reference.
+
+        Returns:
+            Reference value to retrieve next page.
+
+        .. _requests.Response:
+            https://docs.python-requests.org/en/latest/api/#requests.Response
+        """
+        all_matches = extract_jsonpath(self.next_page_token_jsonpath, response.json())
+        first_match = next(iter(all_matches), None)
+        next_page_token = first_match
+        return next_page_token
