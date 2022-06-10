@@ -10,6 +10,22 @@ from tap_gorgias.client import GorgiasStream
 
 logger = logging.getLogger(__name__)
 
+CUSTOMER_SCHEMA = [
+    th.ObjectType(
+        th.Property("id", th.IntegerType),
+        th.Property("email", th.StringType),
+        th.Property("name", th.StringType),
+        th.Property("firstname", th.StringType),
+        th.Property("lastname", th.StringType),
+        th.Property(
+            "meta",
+            th.ObjectType(
+                th.Property("name_set_via", th.StringType),
+            ),
+        ),
+    )
+]
+
 
 class TicketsStream(GorgiasStream):
     """Define custom stream."""
@@ -22,22 +38,6 @@ class TicketsStream(GorgiasStream):
 
     # Link to the next items, if any.
     next_page_token_jsonpath = "$.meta.next_items"
-
-    customer_schema = [
-        th.ObjectType(
-            th.Property("id", th.IntegerType),
-            th.Property("email", th.StringType),
-            th.Property("name", th.StringType),
-            th.Property("first_name", th.StringType),
-            th.Property("last_name", th.StringType),
-            th.Property(
-                "meta",
-                th.ObjectType(
-                    th.Property("name_set_via", th.StringType),
-                ),
-            ),
-        )
-    ]
 
     schema = th.PropertiesList(
         th.Property(
@@ -78,15 +78,15 @@ class TicketsStream(GorgiasStream):
         ),
         th.Property(
             "requester",
-            *customer_schema
+            *CUSTOMER_SCHEMA
         ),
         th.Property(
             "customer",
-            *customer_schema
+            *CUSTOMER_SCHEMA
         ),
         th.Property(
             "assignee_user",
-            *customer_schema
+            *CUSTOMER_SCHEMA
         ),
         th.Property(
             "assignee_team",
@@ -460,28 +460,7 @@ class MessagesStream(GorgiasStream):
         ),
         th.Property(
             "sender",
-            th.ObjectType(
-                th.Property(
-                    "id",
-                    th.IntegerType
-                ),
-                th.Property(
-                    "email",
-                    th.StringType
-                ),
-                th.Property(
-                    "name",
-                    th.StringType
-                ),
-                th.Property(
-                    "firstname",
-                    th.StringType
-                ),
-                th.Property(
-                    "lastname",
-                    th.StringType
-                ),
-            )
+            *CUSTOMER_SCHEMA
         ),
         th.Property(
             "integration_id",
@@ -497,28 +476,7 @@ class MessagesStream(GorgiasStream):
         ),
         th.Property(
             "receiver",
-            th.ObjectType(
-                th.Property(
-                    "id",
-                    th.IntegerType,
-                ),
-                th.Property(
-                    "email",
-                    th.StringType,
-                ),
-                th.Property(
-                    "name",
-                    th.StringType,
-                ),
-                th.Property(
-                    "StringType",
-                    th.IntegerType,
-                ),
-                th.Property(
-                    "lastname",
-                    th.StringType,
-                ),
-            )
+            *CUSTOMER_SCHEMA
         ),
         th.Property(
             "subject",
