@@ -17,12 +17,6 @@ CUSTOMER_SCHEMA = [
         th.Property("name", th.StringType),
         th.Property("firstname", th.StringType),
         th.Property("lastname", th.StringType),
-        th.Property(
-            "meta",
-            th.ObjectType(
-                th.Property("name_set_via", th.StringType),
-            ),
-        ),
     )
 ]
 
