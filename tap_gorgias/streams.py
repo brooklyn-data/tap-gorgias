@@ -184,6 +184,10 @@ class TicketsStream(GorgiasStream):
             th.BooleanType
         ),
         th.Property(
+            "spam",
+            th.BooleanType
+        ),
+        th.Property(
             "created_datetime",
             th.DateTimeType
         ),
@@ -209,6 +213,10 @@ class TicketsStream(GorgiasStream):
         ),
         th.Property(
             "snooze_datetime",
+            th.DateTimeType
+        ),
+        th.Property(
+            "trashed_datetime",
             th.DateTimeType
         ),
     ).to_dict()
