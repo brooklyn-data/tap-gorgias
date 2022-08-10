@@ -34,195 +34,76 @@ class TicketsStream(GorgiasStream):
     next_page_token_jsonpath = "$.meta.next_items"
 
     schema = th.PropertiesList(
-        th.Property(
-            "id",
-            th.IntegerType
-        ),
-        th.Property(
-            "uri",
-            th.StringType
-        ),
-        th.Property(
-            "external_id",
-            th.StringType
-        ),
-        th.Property(
-            "language",
-            th.StringType
-        ),
-        th.Property(
-            "status",
-            th.StringType
-        ),
-        th.Property(
-            "priority",
-            th.StringType
-        ),
-        th.Property(
-            "channel",
-            th.StringType
-        ),
-        th.Property(
-            "via",
-            th.StringType
-        ),
-        th.Property(
-            "from_agent",
-            th.BooleanType
-        ),
-        th.Property(
-            "requester",
-            *CUSTOMER_SCHEMA
-        ),
-        th.Property(
-            "customer",
-            *CUSTOMER_SCHEMA
-        ),
-        th.Property(
-            "assignee_user",
-            *CUSTOMER_SCHEMA
-        ),
+        th.Property("id", th.IntegerType),
+        th.Property("uri", th.StringType),
+        th.Property("external_id", th.StringType),
+        th.Property("language", th.StringType),
+        th.Property("status", th.StringType),
+        th.Property("priority", th.StringType),
+        th.Property("channel", th.StringType),
+        th.Property("via", th.StringType),
+        th.Property("from_agent", th.BooleanType),
+        th.Property("requester", *CUSTOMER_SCHEMA),
+        th.Property("customer", *CUSTOMER_SCHEMA),
+        th.Property("assignee_user", *CUSTOMER_SCHEMA),
         th.Property(
             "assignee_team",
             th.ObjectType(
-                th.Property(
-                    "id",
-                    th.IntegerType
-                ),
-                th.Property(
-                    "name",
-                    th.StringType
-                ),
+                th.Property("id", th.IntegerType),
+                th.Property("name", th.StringType),
                 th.Property(
                     "decoration",
                     th.ObjectType(
                         th.Property(
                             "emoji",
                             th.ObjectType(
-                                th.Property(
-                                    "id",
-                                    th.StringType
-                                ),
-                                th.Property(
-                                    "name",
-                                    th.StringType
-                                ),
-                                th.Property(
-                                    "skin",
-                                    th.IntegerType
-                                ),
-                                th.Property(
-                                    "colons",
-                                    th.StringType
-                                ),
-                                th.Property(
-                                    "native",
-                                    th.StringType
-                                ),
-                                th.Property(
-                                    "unified",
-                                    th.StringType
-                                ),
-                            )
+                                th.Property("id", th.StringType),
+                                th.Property("name", th.StringType),
+                                th.Property("skin", th.IntegerType),
+                                th.Property("colons", th.StringType),
+                                th.Property("native", th.StringType),
+                                th.Property("unified", th.StringType),
+                            ),
                         )
-                    )
-                )
-            )
+                    ),
+                ),
+            ),
         ),
-        th.Property(
-            "subject",
-            th.StringType
-        ),
-        th.Property(
-            "excerpt",
-            th.StringType
-        ),
+        th.Property("subject", th.StringType),
+        th.Property("excerpt", th.StringType),
         th.Property(
             "integrations",
             th.ArrayType(
                 th.ObjectType(
-                    th.Property(
-                        "name",
-                        th.StringType
-                    ),
-                    th.Property(
-                        "address",
-                        th.StringType
-                    ),
-                    th.Property(
-                        "type",
-                        th.StringType
-                    ),
+                    th.Property("name", th.StringType),
+                    th.Property("address", th.StringType),
+                    th.Property("type", th.StringType),
                 )
-            )
+            ),
         ),
         th.Property(
             "tags",
             th.ArrayType(
                 th.ObjectType(
-                    th.Property(
-                        "id",
-                        th.IntegerType
-                    ),
-                    th.Property(
-                        "name",
-                        th.StringType
-                    ),
-                    th.Property(
-                        "uri",
-                        th.StringType
-                    ),
+                    th.Property("id", th.IntegerType),
+                    th.Property("name", th.StringType),
+                    th.Property("uri", th.StringType),
                 )
-            )
+            ),
         ),
-        th.Property(
-            "messages_count",
-            th.IntegerType
-        ),
-        th.Property(
-            "is_unread",
-            th.BooleanType
-        ),
-        th.Property(
-            "spam",
-            th.BooleanType
-        ),
-        th.Property(
-            "created_datetime",
-            th.DateTimeType
-        ),
-        th.Property(
-            "opened_datetime",
-            th.DateTimeType
-        ),
-        th.Property(
-            "last_received_message_datetime",
-            th.DateTimeType
-        ),
-        th.Property(
-            "last_message_datetime",
-            th.DateTimeType
-        ),
-        th.Property(
-            "updated_datetime",
-            th.DateTimeType
-        ),
-        th.Property(
-            "closed_datetime",
-            th.DateTimeType
-        ),
-        th.Property(
-            "snooze_datetime",
-            th.DateTimeType
-        ),
-        th.Property(
-            "trashed_datetime",
-            th.DateTimeType
-        ),
+        th.Property("messages_count", th.IntegerType),
+        th.Property("is_unread", th.BooleanType),
+        th.Property("created_datetime", th.DateTimeType),
+        th.Property("opened_datetime", th.DateTimeType),
+        th.Property("last_received_message_datetime", th.DateTimeType),
+        th.Property("last_message_datetime", th.DateTimeType),
+        th.Property("updated_datetime", th.DateTimeType),
+        th.Property("closed_datetime", th.DateTimeType),
+        th.Property("snooze_datetime", th.DateTimeType),
     ).to_dict()
 
     def prepare_request(
-            self, context: Optional[dict], next_page_token: Optional[Any]
+        self, context: Optional[dict], next_page_token: Optional[Any]
     ) -> requests.PreparedRequest:
         """Prepare a request object.
 
@@ -360,11 +241,11 @@ class TicketsStream(GorgiasStream):
         return {"ticket_id": record["id"]}
 
     def get_url_params(
-            self, context: Optional[dict], next_page_token: Optional[Any]
+        self, context: Optional[dict], next_page_token: Optional[Any]
     ) -> Dict[str, Any]:
         """Return the URL parameters for the request.
 
-        For the Tickets stream, the next cursor is returned in a querystring parameter under the path $.meta.next_items
+        For the Tickets View stream, the next cursor is returned in a querystring parameter under the path $.meta.next_items
         so here we parse the whole url query string in order to extract the cursor.
 
         """
@@ -372,7 +253,140 @@ class TicketsStream(GorgiasStream):
         if not next_page_url_query:
             return {"limit": self.config["page_size"]}
         else:
-            return {"limit": self.config["page_size"], "cursor": next_page_url_query["cursor"][0], "direction": "next"}
+            return {
+                "limit": self.config["page_size"],
+                "cursor": next_page_url_query["cursor"][0],
+                "direction": "next",
+            }
+
+
+class TicketDetailsStream(GorgiasStream):
+    """Uses tickets as a parent stream. This stream is used to get the details of a ticket which are not available
+    in the List Ticket view, like spam or integration details."""
+
+    name = "ticket_details"
+    parent_stream_type = TicketsStream
+    path = "/api/tickets/{ticket_id}"
+    primary_keys = ["id"]
+    state_partitioning_keys = []
+
+    records_jsonpath = "$"
+
+    schema = th.PropertiesList(
+        th.Property("id", th.IntegerType),
+        th.Property(
+            "assignee_user",
+            th.ObjectType(
+                th.Property("id", th.IntegerType),
+                th.Property("email", th.StringType),
+                th.Property("name", th.StringType),
+                th.Property("first_name", th.StringType),
+                th.Property("last_name", th.StringType),
+            ),
+        ),
+        th.Property("channel", th.StringType),
+        th.Property("closed_datetime", th.DateTimeType),
+        th.Property("created_datetime", th.DateTimeType),
+        th.Property(
+            "customer",
+            th.ObjectType(
+                th.Property("id", th.IntegerType),
+                th.Property("name", th.StringType),
+                th.Property("email", th.StringType),
+                th.Property(
+                    "integrations",
+                    th.ObjectType(
+                        th.Property("id", th.IntegerType),
+                        th.Property("created_datetime", th.DateTimeType),
+                        th.Property("deactivated_datetime", th.DateTimeType),
+                        th.Property("description", th.StringType),
+                        th.Property("type", th.StringType),
+                        th.Property("updated_datetime", th.DateTimeType),
+                        th.Property("uri", th.StringType),
+                        th.Property("__integration_type__", th.StringType),
+                        th.Property(
+                            "orders",
+                            th.ObjectType(
+                                th.Property("id", th.IntegerType),
+                                th.Property("name", th.StringType),
+                                th.Property(
+                                    "line_items",
+                                    th.ObjectType(
+                                        th.Property("id", th.IntegerType),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        th.Property(
+            "events",
+            th.ArrayType(
+                th.ObjectType(
+                    th.Property("id", th.IntegerType),
+                    th.Property("context", th.StringType),
+                    th.Property("created_datetime", th.DateTimeType),
+                    th.Property("object_id", th.IntegerType),
+                    th.Property("date", th.DateTimeType),
+                    th.Property("object_type", th.StringType),
+                    th.Property("type", th.StringType),
+                    th.Property("user_id", th.IntegerType),
+                    th.Property("uri", th.StringType),
+                )
+            ),
+        ),
+        th.Property("external_id", th.StringType),
+        th.Property("from_agent", th.BooleanType),
+        th.Property("is_unread", th.BooleanType),
+        th.Property("language", th.StringType),
+        th.Property("last_message_datetime", th.DateTimeType),
+        th.Property("last_received_message_datetime", th.DateTimeType),
+        th.Property("opened_datetime", th.DateTimeType),
+        th.Property("priority", th.StringType),
+        th.Property("snooze_datetime", th.DateTimeType),
+        th.Property("spam", th.BooleanType),
+        th.Property("status", th.StringType),
+        th.Property("subject", th.StringType),
+        th.Property(
+            "tags",
+            th.ArrayType(
+                th.ObjectType(
+                    th.Property("id", th.IntegerType),
+                    th.Property("name", th.StringType),
+                    th.Property("decoration", th.ObjectType(th.Property("color", th.StringType))),
+                )
+            ),
+        ),
+        th.Property("trashed_datetime", th.DateTimeType),
+        th.Property("updated_datetime", th.DateTimeType),
+        th.Property("via", th.StringType),
+        th.Property("uri", th.StringType),
+    ).to_dict()
+
+    def get_url_params(
+        self, context: Optional[dict], next_page_token: Optional[Any]
+    ) -> Dict[str, Any]:
+        """Override parent URL params with no paging as we only grab a single ticket here."""
+        return {}
+
+    def post_process(self, row: dict, context: Optional[dict] = None) -> Optional[dict]:
+        """
+        Remove the ticket and related messages html as it messes up json serialization.
+        We can load these via the Messages stream if needed.
+        """
+        row.pop("body_text", None)
+        row.pop("body_html", None)
+        row.pop("stripped_text", None)
+        row.pop("stripped_html", None)
+
+        for message in row["messages"]:
+            message.pop("body_text", None)
+            message.pop("body_html", None)
+            message.pop("stripped_text", None)
+            message.pop("stripped_html", None)
+        return row
 
 
 class MessagesStream(GorgiasStream):
@@ -411,10 +425,7 @@ class MessagesStream(GorgiasStream):
             "external_id",
             th.StringType,
         ),
-        th.Property(
-            "public",
-            th.BooleanType
-        ),
+        th.Property("public", th.BooleanType),
         th.Property(
             "channel",
             th.StringType,
@@ -426,44 +437,26 @@ class MessagesStream(GorgiasStream):
         th.Property(
             "source",
             th.ObjectType(
-                th.Property(
-                    "type",
-                    th.StringType
-                ),
+                th.Property("type", th.StringType),
                 th.Property(
                     "to",
                     th.ArrayType(
                         th.ObjectType(
-                            th.Property(
-                                "name",
-                                th.StringType
-                            ),
-                            th.Property(
-                                "address",
-                                th.StringType
-                            )
+                            th.Property("name", th.StringType),
+                            th.Property("address", th.StringType),
                         )
                     ),
                 ),
                 th.Property(
                     "from",
                     th.ObjectType(
-                        th.Property(
-                            "name",
-                            th.StringType
-                        ),
-                        th.Property(
-                            "address",
-                            th.StringType
-                        ),
+                        th.Property("name", th.StringType),
+                        th.Property("address", th.StringType),
                     ),
                 ),
-            )
+            ),
         ),
-        th.Property(
-            "sender",
-            *CUSTOMER_SCHEMA
-        ),
+        th.Property("sender", *CUSTOMER_SCHEMA),
         th.Property(
             "integration_id",
             th.IntegerType,
@@ -472,14 +465,8 @@ class MessagesStream(GorgiasStream):
             "rule_id",
             th.IntegerType,
         ),
-        th.Property(
-            "from_agent",
-            th.BooleanType
-        ),
-        th.Property(
-            "receiver",
-            *CUSTOMER_SCHEMA
-        ),
+        th.Property("from_agent", th.BooleanType),
+        th.Property("receiver", *CUSTOMER_SCHEMA),
         th.Property(
             "subject",
             th.StringType,
@@ -514,22 +501,10 @@ class MessagesStream(GorgiasStream):
             "created_datetime",
             th.DateTimeType,
         ),
-        th.Property(
-            "sent_datetime",
-            th.DateTimeType
-        ),
-        th.Property(
-            "failed_datetime",
-            th.DateTimeType
-        ),
-        th.Property(
-            "deleted_datetime",
-            th.DateTimeType
-        ),
-        th.Property(
-            "opened_datetime",
-            th.DateTimeType
-        )
+        th.Property("sent_datetime", th.DateTimeType),
+        th.Property("failed_datetime", th.DateTimeType),
+        th.Property("deleted_datetime", th.DateTimeType),
+        th.Property("opened_datetime", th.DateTimeType),
     ).to_dict()
 
 
@@ -551,46 +526,16 @@ class SatisfactionSurveysStream(GorgiasStream):
 
     primary_keys = ["id"]
     schema = th.PropertiesList(
-        th.Property(
-            "id",
-            th.IntegerType
-        ),
-        th.Property(
-            "body_text",
-            th.StringType
-        ),
-        th.Property(
-            "created_datetime",
-            th.DateTimeType
-        ),
-        th.Property(
-            "customer_id",
-            th.IntegerType
-        ),
-        th.Property(
-            "score",
-            th.IntegerType
-        ),
-        th.Property(
-            "scored_datetime",
-            th.DateTimeType
-        ),
-        th.Property(
-            "sent_datetime",
-            th.DateTimeType
-        ),
-        th.Property(
-            "should_send_datetime",
-            th.DateTimeType
-        ),
-        th.Property(
-            "ticket_id",
-            th.IntegerType
-        ),
-        th.Property(
-            "uri",
-            th.StringType
-        )
+        th.Property("id", th.IntegerType),
+        th.Property("body_text", th.StringType),
+        th.Property("created_datetime", th.DateTimeType),
+        th.Property("customer_id", th.IntegerType),
+        th.Property("score", th.IntegerType),
+        th.Property("scored_datetime", th.DateTimeType),
+        th.Property("sent_datetime", th.DateTimeType),
+        th.Property("should_send_datetime", th.DateTimeType),
+        th.Property("ticket_id", th.IntegerType),
+        th.Property("uri", th.StringType),
     ).to_dict()
 
 
@@ -628,4 +573,43 @@ class CustomersStream(GorgiasStream):
             ),
         ),
         th.Property("error", th.StringType),
+    ).to_dict()
+
+
+class IntegreationsStream(GorgiasStream):
+    name = "integrations"
+    path = "/api/integrations"
+    primary_keys = ["id"]
+
+    # Link to the next items, if any.
+    next_page_token_jsonpath = "$.meta.next_items"
+
+    schema = th.PropertiesList(
+        th.Property("id", th.IntegerType),
+        th.Property("uri", th.StringType),
+        th.Property(
+            "user",
+            th.ObjectType(th.Property("id", th.IntegerType)),
+        ),
+        th.Property("type", th.StringType),
+        th.Property("name", th.StringType),
+        th.Property("description", th.StringType),
+        th.Property(
+            "meta",
+            th.ObjectType(
+                th.Property("shop_name", th.StringType),
+                th.Property("shop_display_name", th.StringType),
+                th.Property("shop_domain", th.StringType),
+                th.Property("shop_plan", th.StringType),
+                th.Property("shop_id", th.IntegerType),
+                th.Property("shopify_integration_ids", th.ArrayType(th.IntegerType)),
+                th.Property("shopify_integration_id", th.IntegerType),
+                th.Property("shop_integration_id", th.IntegerType),
+            ),
+        ),
+        th.Property("created_datetime", th.DateTimeType),
+        th.Property("updated_datetime", th.DateTimeType),
+        th.Property("deactivated_datetime", th.DateTimeType),
+        th.Property("locked_datetime", th.DateTimeType),
+        th.Property("deleted_datetime", th.DateTimeType),
     ).to_dict()
