@@ -14,7 +14,7 @@ This tap extracts:
 ## Installation
 
 ```bash
-pipx install tap-gorgias
+pipx install git+https://github.com/brooklyn-data/tap-gorgias.git
 ```
 
 ## Configuration
