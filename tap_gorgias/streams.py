@@ -2,6 +2,7 @@
 from urllib import parse
 from datetime import datetime
 import logging
+import json
 import requests
 from typing import Any, Dict, Optional, Iterable, cast
 from singer_sdk import typing as th  # JSON Schema typing helpers
@@ -270,8 +271,6 @@ class TicketDetailsStream(GorgiasStream):
     primary_keys = ["id"]
     state_partitioning_keys = []
 
-    records_jsonpath = "$"
-
     schema = th.PropertiesList(
         th.Property("id", th.IntegerType),
         th.Property(
@@ -296,23 +295,25 @@ class TicketDetailsStream(GorgiasStream):
                 th.Property(
                     "integrations",
                     th.ObjectType(
-                        th.Property("id", th.IntegerType),
-                        th.Property("created_datetime", th.DateTimeType),
-                        th.Property("deactivated_datetime", th.DateTimeType),
-                        th.Property("description", th.StringType),
-                        th.Property("type", th.StringType),
-                        th.Property("updated_datetime", th.DateTimeType),
-                        th.Property("uri", th.StringType),
-                        th.Property("__integration_type__", th.StringType),
                         th.Property(
-                            "orders",
+                            "shopify",
                             th.ObjectType(
                                 th.Property("id", th.IntegerType),
-                                th.Property("name", th.StringType),
                                 th.Property(
-                                    "line_items",
-                                    th.ObjectType(
-                                        th.Property("id", th.IntegerType),
+                                    "orders",
+                                    th.ArrayType(
+                                        th.ObjectType(
+                                            th.Property("id", th.IntegerType),
+                                            th.Property("name", th.StringType),
+                                            th.Property(
+                                                "line_items",
+                                                th.ArrayType(
+                                                    th.ObjectType(
+                                                        th.Property("id", th.IntegerType),
+                                                    ),
+                                                )
+                                            ),
+                                        ),
                                     ),
                                 ),
                             ),
@@ -370,6 +371,23 @@ class TicketDetailsStream(GorgiasStream):
     ) -> Dict[str, Any]:
         """Override parent URL params with no paging as we only grab a single ticket here."""
         return {}
+    
+    def parse_response(self, response: requests.Response) -> Iterable[dict]:
+        """
+        Parse the response and swap dynamic keys (id) by a fixed one ("shopify"),
+        so every response conforms to the same schema. Add original key as a value
+        nested one level bellow.
+
+        Args: response: A raw `requests.Response`_ object.
+
+        Yields: One item for every item found in the response.
+        """
+        resp = response.json()
+        for key in list(resp["customer"]["integrations"].keys()):
+            if resp["customer"]["integrations"][key]["__integration_type__"] == "shopify":
+                resp["customer"]["integrations"]["shopify"] = resp["customer"]["integrations"].pop(key)
+                resp["customer"]["integrations"]["shopify"]["id"] = key
+        yield resp
 
     def post_process(self, row: dict, context: Optional[dict] = None) -> Optional[dict]:
         """
