@@ -9,14 +9,18 @@ from tap_gorgias.streams import (
     TicketsStream,
     MessagesStream,
     SatisfactionSurveysStream,
-    CustomersStream
+    CustomersStream,
+    TicketDetailsStream,
+    IntegreationsStream,
 )
 
 STREAM_TYPES = [
     TicketsStream,
     MessagesStream,
     SatisfactionSurveysStream,
-    CustomersStream
+    CustomersStream,
+    TicketDetailsStream,
+    IntegreationsStream,
 ]
 
 
@@ -60,3 +64,7 @@ class TapGorgias(Tap):
     def discover_streams(self) -> List[Stream]:
         """Return a list of discovered streams."""
         return [stream_class(tap=self) for stream_class in STREAM_TYPES]
+
+
+if __name__ == "__main__":
+    TapGorgias().cli()
