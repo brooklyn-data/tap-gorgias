@@ -130,6 +130,4 @@ class GorgiasStream(RESTStream):
         all_matches = extract_jsonpath(self.next_page_token_jsonpath, response.json())
         first_match = next(iter(all_matches), None)
         next_page_token = first_match
-        if next_page_token == previous_token:
-            return None
         return next_page_token
