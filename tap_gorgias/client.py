@@ -131,3 +131,24 @@ class GorgiasStream(RESTStream):
         first_match = next(iter(all_matches), None)
         next_page_token = first_match
         return next_page_token
+
+    def response_error_message(self, response: requests.Response) -> str:
+            """Build error message for invalid http statuses.
+            WARNING - Override this method when the URL path may contain secrets or PII
+            Args:
+                response: A `requests.Response`_ object.
+            Returns:
+                str: The error message
+            """
+            full_path = response.url
+            if 400 <= response.status_code < 500:
+                error_type = "Client"
+            else:
+                error_type = "Server"
+
+            return (
+                f"{response.__dict__}"
+                f"full path:{full_path}"
+                f"{response.status_code} {error_type} Error: "
+                f"{response.reason} for path: {full_path}"
+            )
