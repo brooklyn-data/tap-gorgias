@@ -2,7 +2,7 @@
 
 import time
 from typing import Dict, Optional, Any
-
+import json
 import requests
 from singer_sdk.helpers.jsonpath import extract_jsonpath
 
@@ -83,9 +83,10 @@ class GorgiasStream(RESTStream):
             time.sleep(retry_after)
             raise RetriableAPIError(msg)
         elif 400 <= response.status_code < 500:
+            error_text = json.loads(response.text)
             msg = (
                 f"{response.status_code} Client Error: "
-                f"{response.reason} for path: {self.path}"
+                f"{response.reason} ({error_text['error']['msg']}) for path: {self.path}"
             )
             raise FatalAPIError(msg)
         elif 500 <= response.status_code < 600:
@@ -130,25 +131,6 @@ class GorgiasStream(RESTStream):
         all_matches = extract_jsonpath(self.next_page_token_jsonpath, response.json())
         first_match = next(iter(all_matches), None)
         next_page_token = first_match
+        if next_page_token == previous_token:
+            return None
         return next_page_token
-
-    def response_error_message(self, response: requests.Response) -> str:
-            """Build error message for invalid http statuses.
-            WARNING - Override this method when the URL path may contain secrets or PII
-            Args:
-                response: A `requests.Response`_ object.
-            Returns:
-                str: The error message
-            """
-            full_path = response.url
-            if 400 <= response.status_code < 500:
-                error_type = "Client"
-            else:
-                error_type = "Server"
-
-            return (
-                f"{response.__dict__}"
-                f"full path:{full_path}"
-                f"{response.status_code} {error_type} Error: "
-                f"{response.reason} for path: {full_path}"
-            )
