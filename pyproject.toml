@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tap-gorgias"
-version = "0.0.1"
+version = "0.0.2"
 description = "`tap-gorgias` is a Singer tap for Gorgias, built with the Meltano SDK for Singer Taps."
 authors = ["Niall Woodward"]
 keywords = [
@@ -12,7 +12,7 @@ license = "Apache 2.0"
 [tool.poetry.dependencies]
 python = ">=3.7.1,<3.10"
 requests = "^2.25.1"
-singer-sdk = "^0.4.4"
+singer-sdk = "^0.14.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"

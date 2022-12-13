@@ -21,7 +21,6 @@ CUSTOMER_SCHEMA = [
     )
 ]
 
-
 class TicketsStream(GorgiasStream):
     """Define custom stream."""
 
@@ -253,13 +252,15 @@ class TicketsStream(GorgiasStream):
         next_page_url_query = parse.parse_qs(next_page_token)
         if not next_page_url_query:
             return {"limit": self.config["page_size"]}
-        else:
-            return {
-                "limit": self.config["page_size"],
-                "cursor": next_page_url_query["cursor"][0],
-                "direction": "next",
-            }
 
+        next_page_params = { k: v[0] for (k, v) in next_page_url_query.items() }
+
+        return {
+            "limit": self.config["page_size"],
+            "cursor": next_page_params["cursor"],
+            "ignored_item": next_page_params["ignored_item"],
+            "direction": "next",
+        }
 
 class TicketDetailsStream(GorgiasStream):
     """Uses tickets as a parent stream. This stream is used to get the details of a ticket which are not available
