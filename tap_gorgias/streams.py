@@ -601,7 +601,7 @@ class IntegreationsStream(GorgiasStream):
     primary_keys = ["id"]
 
     # Link to the next items, if any.
-    next_page_token_jsonpath = "$.meta.next_items"
+    next_page_token_jsonpath = "$.meta.next_cursor"
 
     schema = th.PropertiesList(
         th.Property("id", th.IntegerType),
