@@ -160,15 +160,23 @@ class TicketsStream(GorgiasStream):
     def create_ticket_view(self, sync_start_datetime: datetime) -> int:
         headers = self.get_headers()
         current_user_id = self.get_current_user_id()
+        shared_with_users = [current_user_id] + self.config.get("view_shared_with_users")
         payload = {
             "category": "user",
             "order_by": "updated_datetime",
             "order_dir": "asc",
-            "visibility": "private",
-            "shared_with_users": [current_user_id],
+            "visibility": self.config.get("view_visibility"),
+            "shared_with_users": shared_with_users,
             "type": "ticket-list",
             "slug": "could-be-anything",
+            "name": self.config.get("view_name"),
         }
+
+        # When visibility is public, API will not accept `shared_with_users`
+        # nor `shared_with_groups`
+        if self.config.get("view_visibility") == "public":
+            del payload["shared_with_users"]
+
         if sync_start_datetime:
             payload.update(
                 {
