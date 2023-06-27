@@ -12,6 +12,7 @@ from tap_gorgias.streams import (
     CustomersStream,
     TicketDetailsStream,
     IntegreationsStream,
+    EventStream
 )
 
 STREAM_TYPES = [
@@ -21,6 +22,7 @@ STREAM_TYPES = [
     CustomersStream,
     TicketDetailsStream,
     IntegreationsStream,
+    EventStream,
 ]
 
 

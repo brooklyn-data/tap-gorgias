@@ -1,0 +1,40 @@
+{
+    "type": [
+      "object"
+    ],
+    "properties": {
+        "id": {
+            "type": ["int", "null"],
+            "description": "The id of the event."
+        },
+        "context": {
+            "type": ["string", "null"],
+            "description": "hash id."
+        },
+        "created_datetime": {
+            "type": ["string"],
+            "description": "The time the event was created",
+            "format": "date-time"
+        },
+        "data": {
+            "type": ["object", "null"],
+            "description": "The data associated with the event."
+        },
+        "object_id": {
+            "type": ["int", "null"],
+            "description": "The event object id"
+        },
+        "object_type": {
+            "type": ["string", "null"],
+            "description": "The type of object assocaited with the event"
+        },
+        "type": {
+            "type": ["string", "null"],
+            "description": "The type of event"
+        },
+        "user_id": {
+            "type": ["int", "null"],
+            "description": "ID of the user associated with the event"
+        }
+    }
+}
