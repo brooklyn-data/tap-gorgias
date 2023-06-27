@@ -1,5 +1,6 @@
 """Stream type classes for tap-gorgias."""
 from urllib import parse
+from pathlib import Path
 from datetime import datetime
 import logging
 import json
@@ -20,6 +21,8 @@ CUSTOMER_SCHEMA = [
         th.Property("lastname", th.StringType),
     )
 ]
+
+SCHEMAS_DIR = Path(__file__).parent / Path("./schemas")
 
 class TicketsStream(GorgiasStream):
     """Define custom stream."""
@@ -632,3 +635,37 @@ class IntegreationsStream(GorgiasStream):
         th.Property("locked_datetime", th.DateTimeType),
         th.Property("deleted_datetime", th.DateTimeType),
     ).to_dict()
+
+
+class EventStream(GorgiasStream):
+    name = "events"
+    path = "/api/events"
+    primary_keys = ["id"]
+    replication_key = "created_datetime"
+    # is_sorted = True
+
+    # since next_page_token_jsonpath is already defined in GorgiasStream, no need to define it here 
+    # next_page_token_jsonpath = "$.meta.next_page"
+
+    schema_filepath = SCHEMAS_DIR / "events.json"
+
+    def get_records(self, context: Optional[dict]) -> Iterable[Dict[str, Any]]:
+        """Return a generator of row-type dictionary objects.
+
+        Each row emitted should be a dictionary of property names to their values.
+
+        Args:
+            context: Stream partition or context dictionary.
+
+        Yields:
+            One item per (possibly processed) record in the API.
+        """
+        sync_start_datetime = self.get_starting_timestamp(context)
+        logger.info(f"Starting timestamp: {sync_start_datetime}")
+        
+        for record in self.request_records(context):
+            transformed_record = self.post_process(record, context)
+            if transformed_record is None:
+                # Record filtered out during post_process()
+                continue
+            yield transformed_record
