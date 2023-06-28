@@ -648,6 +648,13 @@ class EventStream(GorgiasStream):
 
     schema_filepath = SCHEMAS_DIR / "events.json"
 
+    def get_url_params(
+        self, context: Optional[dict], next_page_token: Optional[Any]
+    ) -> Dict[str, Any]:
+        sync_start_datetime = self.get_starting_timestamp(context)
+        dt_str = sync_start_datetime.replace(tzinfo=None).isoformat()
+        return {"cursor": next_page_token, "limit": self.config["page_size"], "created_datetime[gte]":dt_str}
+
     def post_process(self, row: dict, context: dict = None) -> dict:
         if row:
             data = row.get('data')
