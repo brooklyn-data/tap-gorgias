@@ -2,7 +2,7 @@
     "type": "object",
     "properties": {
         "id": {
-            "type": ["int", "null"],
+            "type": ["integer", "null"],
             "description": "The id of the event."
         },
         "context": {
@@ -19,7 +19,7 @@
             "description": "The data associated with the event."
         },
         "object_id": {
-            "type": ["int", "null"],
+            "type": ["integer", "null"],
             "description": "The event object id"
         },
         "object_type": {
@@ -31,7 +31,7 @@
             "description": "The type of event"
         },
         "user_id": {
-            "type": ["int", "null"],
+            "type": ["integer", "null"],
             "description": "ID of the user associated with the event"
         }
     }
