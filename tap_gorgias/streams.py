@@ -648,6 +648,13 @@ class EventStream(GorgiasStream):
 
     schema_filepath = SCHEMAS_DIR / "events.json"
 
+    def post_process(self, row: dict, context: dict = None) -> dict:
+        if row:
+            data = row.get('data')
+            if data:
+                row['data'] = json.dumps(data)
+        return row
+
     def get_records(self, context: Optional[dict]) -> Iterable[Dict[str, Any]]:
         """Return a generator of row-type dictionary objects.
 

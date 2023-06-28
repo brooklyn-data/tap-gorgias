@@ -1,7 +1,5 @@
 {
-    "type": [
-      "object"
-    ],
+    "type": "object",
     "properties": {
         "id": {
             "type": ["int", "null"],
@@ -12,12 +10,12 @@
             "description": "hash id."
         },
         "created_datetime": {
-            "type": ["string"],
+            "type": ["string", "null"],
             "description": "The time the event was created",
             "format": "date-time"
         },
         "data": {
-            "type": ["object", "null"],
+            "type": ["string", "null"],
             "description": "The data associated with the event."
         },
         "object_id": {
