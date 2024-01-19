@@ -364,6 +364,14 @@ class TicketDetailsStream(GorgiasStream):
                 )
             ),
         ),
+        th.Property(
+            "custom_fields",
+            th.ObjectType(
+                th.Property("6399", th.ObjectType(th.Property("value", th.StringType))),
+                th.Property("6633", th.ObjectType(th.Property("value", th.StringType))),
+                th.Property("6634", th.ObjectType(th.Property("value", th.StringType))),
+            ),
+        ),
         th.Property("trashed_datetime", th.DateTimeType),
         th.Property("updated_datetime", th.DateTimeType),
         th.Property("via", th.StringType),
