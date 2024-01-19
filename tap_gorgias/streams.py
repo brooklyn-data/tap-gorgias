@@ -667,6 +667,17 @@ class EventStream(GorgiasStream):
         if row:
             data = row.get('data')
             if data:
+                # Custom fields should be renamed for clarity
+                if 'custom_fields' in data:
+                    if '6399' in data['custom_fields']:
+                        data['custom_fields']['custom__ticket_category'] = data['custom_fields']['6399']
+                        data['custom_fields'].pop('6399', None)
+                    if '6633' in data['custom_fields']:
+                        data['custom_fields']['custom__related_to_a_can'] = data['custom_fields']['6633']
+                        data['custom_fields'].pop('6633', None)
+                    if '6634' in data['custom_fields']:                        
+                        data['custom_fields']['custom__retailer'] = data['custom_fields']['6634']
+                        data['custom_fields'].pop('6634', None)
                 row['data'] = json.dumps(data)
         return row
 
