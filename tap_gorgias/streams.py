@@ -28,7 +28,7 @@ class TicketsStream(GorgiasStream):
     path = "/api/views/{view_id}/items"
     primary_keys = ["id"]
     replication_key = "updated_datetime"
-    is_sorted = True
+    is_sorted = False
 
     # Link to the next items, if any.
     next_page_token_jsonpath = "$.meta.next_items"
