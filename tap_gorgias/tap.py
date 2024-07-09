@@ -59,6 +59,24 @@ class TapGorgias(Tap):
             default=100,
             description="The page size for each list endpoint call",
         ),
+        th.Property(
+            "view_visibility",
+            th.StringType,
+            default="private",
+            allowed_values=["private", "public", "shared"],
+            description="Visilibity for tickets view. One of `private`, `public`, or `shared`",
+        ),
+        th.Property(
+            "view_name",
+            th.StringType,
+            description="Optional name for tickets view that is created",
+        ),
+        th.Property(
+            "view_shared_with_users",
+            th.ArrayType(th.IntegerType),
+            default=[],
+            description="Optional list of user IDs to additionally share the tickets view with",
+        ),
     ).to_dict()
 
     def discover_streams(self) -> List[Stream]:
